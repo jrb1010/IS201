@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shrimp Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      background-color: #f0f8ff;
+      transition: background 0.5s;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 48px;
+    }
+    .clarifying {
+      color: black; /* Make clarifying questions black */
+    }
+    .shrimp-bg {
+      background-image: url('https://archive.punkee.com.au/wp-content/uploads/2017/09/where-my-shrimp-780x520.png');
+    }
+    .no-shrimp-bg {
+      background-image: url('https://pbs.twimg.com/media/EIPnwtDX0AMbJb9?format=jpg&name=4096x4096');
+    }
+    .shrimp {
+      color: black;
+      font-weight: bold;
+      animation: freakout 0.5s infinite alternate;
+    }
+    @keyframes freakout {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+    .no-shrimp {
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shrimp Detector</h1>
+  <p>Are you a shrimp?</p>
+  <button id="yesButton">Yes</button>
+  <button id="noButton">No</button>
+  <button id="resetButton" style="display:none;">Reset</button>
+  <div id="result" class="result"></div>
+  
+  <!-- Audio for shrimp detection -->
+  <audio id="shrimpAudio" src="https://www.myinstants.com/media/sounds/tiktok-laugh.mp3"></audio>
+  <!-- Audio for no shrimp detected -->
+  <audio id="noShrimpAudio" src="https://www.voicy.network/sounds/Sg2E4nBEv06WHmpZOZIRVw-bravo-six-going-dark"></audio>
+
+  <script>
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const resetButton = document.getElementById('resetButton');
+    const resultDiv = document.getElementById('result');
+    const shrimpAudio = document.getElementById('shrimpAudio');
+    const noShrimpAudio = document.getElementById('noShrimpAudio');
+    let noClickCount = 0;
+
+    yesButton.addEventListener('click', () => {
+      document.body.classList.remove('no-shrimp-bg');
+      document.body.classList.add('shrimp-bg');
+      resultDiv.textContent = "SHRIMP DETECTED!!!!!!! 🤢🤮";
+      resultDiv.className = "result shrimp";
+      shrimpAudio.play();
+      resetButton.style.display = "block";
+      yesButton.disabled = true;
+      noButton.disabled = true;
+    });
+
+    noButton.addEventListener('click', () => {
+      noClickCount++;
+      if (noClickCount === 1) {
+        resultDiv.textContent = "Hmm... are you REALLY not a shrimp?";
+        resultDiv.className = "result clarifying"; /* Use the clarifying style */
+      } else if (noClickCount === 2) {
+        resultDiv.textContent = "Okay, but seriously, are you SURE you're not a shrimp?";
+        resultDiv.className = "result clarifying"; /* Use the clarifying style */
+      } else {
+        document.body.classList.remove('shrimp-bg');
+        document.body.classList.add('no-shrimp-bg');
+        resultDiv.textContent = "Clear. No shrimps detected.";
+        resultDiv.className = "result no-shrimp";
+        noShrimpAudio.play(); // Play the "Bravo Six, Going Dark" sound
+        resetButton.style.display = "block";
+        yesButton.disabled = true;
+        noButton.disabled = true;
+      }
+    });
+
+    resetButton.addEventListener('click', () => {
+      document.body.classList.remove('shrimp-bg', 'no-shrimp-bg');
+      resultDiv.textContent = "";
+      resetButton.style.display = "none";
+      yesButton.disabled = false;
+      noButton.disabled = false;
+      noClickCount = 0;
+    });
+  </script>
+</body>
+</html>
+
+
+
